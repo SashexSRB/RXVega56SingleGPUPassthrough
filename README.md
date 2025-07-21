@@ -62,13 +62,12 @@ log_outputs="1:file:/var/log/libvirt/libvirtd.log"
 7. Optionally use virtio network type and disk. For that you have to add virtio-win.iso disk into a CD-ROM
 
 # Step 7. Passthrough corresponding GPU vBIOS.
-1. Either dump it yourself (amdvbflash or nvflash), GPU-Z using Windows or find one on https://www.techpowerup.com/vgabios/. You need the exact vBIOS for your own Card. Every GPU Vendor has its own vBIOS. So my GPU.rom will not work unless you also have MSI RX Vega 56 AirBoost. 
+1. Either dump it yourself (amdvbflash), GPU-Z using Windows or find one on https://www.techpowerup.com/vgabios/. You need the exact vBIOS for your own Card. Every GPU Vendor has its own vBIOS. So my GPU.rom will not work unless you also have MSI RX Vega 56 AirBoost. 
 2. Copy it to the following path and rename it: `/var/lib/libvirt/vbios/GPU.rom`
-3. For NVIDIA: You might have to strip it from DRM using a hex editor of some sort before being able to use it.
-4. Execute following commands:
+3. Execute following commands:
   - `chmod -R 660 GPU.rom` and `chown username:username GPU.rom`
-5. Copy the contents of addToVmXML.txt into the XML of the VM, near the end of the XML, right before `<memballoon>` tag. Remember to change the PCI ID in it beforehand.
-6. Then remove Spice/QXL stuff from the VM
+4. Copy the contents of addToVmXML.txt into the XML of the VM, near the end of the XML, right before `<memballoon>` tag. Remember to change the PCI ID in it beforehand.
+5. Then remove Spice/QXL stuff from the VM
 
 # Step 8: Create needed directories for hook scripts
 ```
