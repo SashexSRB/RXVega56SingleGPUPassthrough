@@ -24,7 +24,7 @@ If you get a response, you're good.
 
 # Step 4: Install tools
 Enter this command:
-``sudo pacman -S virt-manager qemu vde2 ebtables iptables-nft nftables dnsmasq bridge-utils ovmf``
+``sudo pacman -S virt-manager qemu libvirt ovmf edk2-ovmf amd-ucode vfio-utils linux-headers vendor-reset bridge-utils, dnsmasq``
 
 # Step 5: Edit Config
 1. Edit this file: `/etc/libvirt/libvirtd.conf`. Uncomment the # off the following lines:
@@ -42,6 +42,7 @@ log_outputs="1:file:/var/log/libvirt/libvirtd.log"
   - ``sudo usermod -a -G libvirt $(whoami)``
   - ``sudo systemctl start libvirtd``
   - ``sudo systemctl enable libvirtd``
+  - ``sudo modprobe vendor-reset``
 5. Now edit this file: `/etc/libvirt/qemu.conf`
   - change `#user = "root"`` to ``user = "your username"`
   - and `#group = "root"`` to ``group = "your username"`
