@@ -1,14 +1,11 @@
 # Single GPU Passthrough for RX Vega 56
-***
 This is a guide for passing an RX Vega 56 to a Windows 10 Guest VM on ArchLinux.
 
 # Step 1: Enabling IOMMU in UEFI
-***
 If you have Intel CPU, enable VT-d and VT-x.
 If you have AMD CPU, enable SVM Mode and IOMMU
 
 # Step 2: Editing GRUB Boot Params
-***
 Edit `/etc/default/grub` and put following in the line `GRUB_CMDLINE_LINUX_DEFAULT`
 
 For AMD:
@@ -21,18 +18,15 @@ For Intel:
 Reboot your PC.
 
 # Step 3: Check IOMMU Groups
-***
 To check if IOMMU is enabled, enter this command.
 ``sudo dmesg | grep -i -e DMAR -e IOMMU``
 If you get a response, you're good.
 
 # Step 4: Install tools
-***
 Enter this command:
 ``sudo pacman -S virt-manager qemu vde2 ebtables iptables-nft nftables dnsmasq bridge-utils ovmf``
 
 # Step 5: Edit Config
-***
 Edit this file: `/etc/libvirt/libvirtd.conf`
 Uncomment the # off the following lines:
 ```
@@ -59,7 +53,6 @@ To get networking working enter these commands:
 ``sudo virsh net-start default``
 
 # Step 6: Configure VM
-***
 1. Download Windows 10 ISO.
 2. Open virt-manager and create a new VM
 3. Leave default VM name.
@@ -69,7 +62,6 @@ To get networking working enter these commands:
 7. Optionally use virtio network type and disk. For that you have to add virtio-win.iso disk into a CD-ROM
 
 # Step 7. Passthrough corresponding GPU vBIOS.
-***
 Either dump it yourself (amdvbflash or nvflash), GPU-Z using Windows or find one on https://www.techpowerup.com/vgabios/. You need the exact vBIOS for your own Card. Every GPU Vendor has its own vBIOS. So my GPU.rom will not work unless you also have MSI RX Vega 56 AirBoost. 
 Copy it to the following path and rename it: `/var/lib/libvirt/vbios/GPU.rom`
 For NVIDIA: You might have to strip it from DRM using a hex editor of some sort before being able to use it.
@@ -79,7 +71,6 @@ Copy the contents of addToVmXML.txt into the XML of the VM, near the end of the 
 Then remove Spice/QXL stuff from the VM
 
 # Step 8: Create needed directories for hook scripts
-***
 ```
 /etc/libvirt/hooks/qemu.d
 /etc/libvirt/hooks/qemu.d/win10
@@ -90,7 +81,6 @@ Then remove Spice/QXL stuff from the VM
 ```
 
 # Step 9: Copy the hook scripts.
-***
 Copy start.sh into `/etc/libvirt/hooks/qemu.d/win10/prepare/begin`
 Copy revert.sh into `/etc/libvirt/hooks/qemu.d/win10/release/end`
 Copy kvm.conf into `/etc/libvirt/hooks` (Remember to change the variables to fit your GPU ID. Mine are 2f_00_0 and 2f_00_1)
